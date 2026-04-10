@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>청렴 소통 MBTI 유형검사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d2137;
+  --navy2: #1a3a5c;
+  --gold: #b8893a;
+  --gold-light: #f5e8c8;
+  --ivory: #f6f3ed;
+  --white: #ffffff;
+  --g100: #f4f4f4;
+  --g200: #e5e5e5;
+  --g400: #aaa;
+  --g600: #666;
+  --text: #1a1a2a;
+  --green: #2a6e42;
+  --red: #b5301f;
+  --c1: #1e4d7b;
+  --c2: #2a6a47;
+  --c3: #7b4f1a;
+  --c4: #5b2d7b;
+  --shadow: 0 2px 16px rgba(13,33,55,0.10);
+  --shadow2: 0 4px 24px rgba(13,33,55,0.15);
+  --radius: 16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow-x:hidden;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--ivory);color:var(--text);min-height:100vh;}
+
+/* PAGES */
+.page{display:none;min-height:100vh;}
+.page.active{display:block;}
+.container{max-width:480px;margin:0 auto;padding:16px 16px 80px;}
+
+/* HEADER */
+.app-bar{background:var(--navy);padding:14px 16px;position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:center;gap:8px;}
+.app-bar-title{font-family:'Noto Serif KR',serif;color:var(--gold);font-size:1.05rem;font-weight:700;letter-spacing:0.06em;}
+
+/* CARDS */
+.card{background:var(--white);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px;}
+.card-title{font-family:'Noto Serif KR',serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+
+/* BUTTONS */
+.btn{display:block;width:100%;padding:14px 20px;border:none;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:0.95rem;font-weight:500;cursor:pointer;transition:all .2s;text-align:center;}
+.btn-primary{background:var(--navy);color:#fff;}
+.btn-primary:active{background:var(--navy2);}
+.btn-gold{background:var(--gold);color:#fff;}
+.btn-outline{background:transparent;border:2px solid var(--navy);color:var(--navy);}
+.btn-danger{background:#fee2e2;color:var(--red);border:2px solid var(--red);}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.btn+.btn{margin-top:10px;}
+
+/* INPUT */
+.inp{width:100%;padding:13px 15px;border:2px solid var(--g200);border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:0.95rem;outline:none;transition:border-color .2s;background:#fff;}
+.inp:focus{border-color:var(--navy);}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--g200);display:flex;z-index:100;max-width:100%;}
+.bnav-btn{flex:1;padding:10px 4px 8px;background:none;border:none;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-size:0.65rem;color:var(--g400);display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .2s;}
+.bnav-btn .ic{font-size:1.2rem;line-height:1;}
+.bnav-btn.on{color:var(--navy);}
+.bnav-btn.on .ic{transform:scale(1.1);}
+
+/* ===== HOME ===== */
+.hero{text-align:center;padding:32px 0 20px;}
+.hero-seal{width:76px;height:76px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:2.2rem;box-shadow:var(--shadow2);}
+.hero-badge{display:inline-block;background:var(--gold-light);color:var(--gold);border:1px solid var(--gold);padding:5px 14px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:.08em;margin-bottom:14px;}
+.hero h1{font-family:'Noto Serif KR',serif;font-size:1.9rem;font-weight:700;color:var(--navy);line-height:1.3;margin-bottom:10px;}
+.hero-sub{color:var(--g600);font-size:0.88rem;line-height:1.7;}
+.info-row{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:0.85rem;color:#555;}
+.info-row:not(:last-child){border-bottom:1px solid var(--g100);}
+
+/* ===== SURVEY ===== */
+.prog-wrap{background:var(--g200);border-radius:4px;height:5px;margin-bottom:6px;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--navy),var(--gold));border-radius:4px;transition:width .4s ease;}
+.q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.axis-chip{padding:4px 12px;border-radius:16px;font-size:0.72rem;font-weight:700;}
+.q-num{font-size:0.78rem;color:var(--g400);}
+.q-text{font-family:'Noto Serif KR',serif;font-size:1.05rem;font-weight:600;color:var(--navy);line-height:1.55;margin-bottom:20px;}
+.ans-btn{display:flex;align-items:flex-start;gap:12px;padding:14px 15px;border:2px solid var(--g200);border-radius:12px;background:#fff;cursor:pointer;text-align:left;width:100%;margin-bottom:10px;transition:all .18s;}
+.ans-btn:active,.ans-btn:hover{border-color:var(--navy);background:#f0f4f8;}
+.ans-btn.sel{border-color:var(--navy);background:var(--navy);color:#fff;}
+.ans-lbl{width:26px;height:26px;min-width:26px;border-radius:50%;background:var(--g200);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem;flex-shrink:0;}
+.ans-btn.sel .ans-lbl{background:var(--gold);color:#fff;}
+.ans-txt{font-size:0.9rem;line-height:1.55;}
+.nav-row{display:flex;gap:8px;}
+.nav-row .btn{flex:1;}
+.btn-prev{flex:0.6!important;}
+.btn-next{flex:1.4!important;}
+
+/* ===== RESULT ===== */
+.type-hero{text-align:center;padding:20px 0 8px;}
+.type-code-badge{display:inline-block;background:var(--navy);color:var(--gold);padding:7px 20px;border-radius:24px;font-weight:700;font-size:1rem;letter-spacing:.12em;margin-bottom:10px;}
+.type-name{font-family:'Noto Serif KR',serif;font-size:1.55rem;font-weight:700;color:var(--navy);margin-bottom:10px;}
+.type-desc{font-size:0.9rem;color:#444;line-height:1.75;text-align:left;}
+.traits{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;justify-content:center;}
+.trait{background:var(--g100);color:var(--navy2);padding:4px 12px;border-radius:14px;font-size:0.75rem;font-weight:500;}
+.edu-chip{display:inline-block;background:var(--gold);color:#fff;padding:3px 10px;border-radius:7px;font-size:0.75rem;font-weight:700;margin-bottom:7px;}
+.edu-name{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:5px;}
+.edu-desc{font-size:0.85rem;color:var(--g600);line-height:1.65;}
+
+/* Wechsler chart */
+.chart-wrap{width:100%;overflow-x:auto;}
+.chart-subtitle{font-size:0.75rem;color:var(--g400);margin-bottom:12px;}
+.axis-score-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.axis-score-card{background:var(--g100);border-radius:10px;padding:10px 12px;}
+.asc-label{font-size:0.72rem;font-weight:700;margin-bottom:5px;}
+.asc-bar-wrap{background:#ddd;border-radius:4px;height:7px;position:relative;overflow:visible;}
+.asc-bar-fill{height:100%;border-radius:4px;transition:width .6s ease;}
+.asc-mid{position:absolute;top:-2px;left:50%;width:2px;height:11px;background:var(--gold);border-radius:1px;}
+.asc-ends{display:flex;justify-content:space-between;font-size:0.65rem;color:var(--g400);margin-top:3px;}
+.asc-val{font-size:0.78rem;font-weight:700;text-align:right;margin-bottom:3px;}
+
+/* ===== DASHBOARD ===== */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.stat-card{background:#fff;border-radius:12px;padding:14px;text-align:center;box-shadow:var(--shadow);}
+.stat-num{font-family:'Noto Serif KR',serif;font-size:1.9rem;font-weight:700;color:var(--navy);line-height:1.1;}
+.stat-lbl{font-size:0.7rem;color:var(--g400);margin-top:3px;}
+.type-bar-row{margin-bottom:10px;}
+.tbr-head{display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:3px;}
+.tbr-name{font-weight:500;color:var(--navy);}
+.tbr-cnt{color:var(--g400);}
+.tbr-track{background:var(--g200);border-radius:4px;height:7px;overflow:hidden;}
+.tbr-fill{height:100%;background:linear-gradient(90deg,var(--navy),var(--gold));border-radius:4px;transition:width .5s ease;}
+.tend-row{margin-bottom:12px;}
+.tend-name{font-size:0.82rem;font-weight:600;margin-bottom:4px;}
+.tend-track{background:var(--g200);border-radius:5px;height:9px;position:relative;}
+.tend-fill{height:100%;border-radius:5px;transition:width .5s ease;}
+.tend-mid{position:absolute;top:0;left:50%;width:2px;height:100%;background:var(--gold);}
+.tend-ends{display:flex;justify-content:space-between;font-size:0.68rem;color:var(--g400);margin-top:2px;}
+.top-type-box{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:14px;padding:18px;text-align:center;}
+.top-type-code{font-family:'Noto Serif KR',serif;font-size:1.5rem;font-weight:700;color:var(--gold);letter-spacing:.1em;}
+.top-type-name{font-size:0.9rem;color:#c8d8e8;margin-top:4px;}
+
+/* ===== ADMIN ===== */
+.resp-item{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--g100);}
+.resp-nick{font-weight:500;font-size:0.9rem;}
+.resp-type{font-size:0.75rem;color:var(--g400);margin-top:1px;}
+.resp-date{font-size:0.7rem;color:var(--g400);}
+
+/* UTILS */
+.mt8{margin-top:8px;}.mt12{margin-top:12px;}.mt16{margin-top:16px;}.mt20{margin-top:20px;}
+.mb8{margin-bottom:8px;}.mb12{margin-bottom:12px;}
+.tc{text-align:center;}
+.bold{font-weight:700;}
+.text-sm{font-size:0.85rem;}
+.text-xs{font-size:0.75rem;}
+.hidden{display:none!important;}
+.divider{border:none;border-top:1px solid var(--g200);margin:14px 0;}
+.empty-msg{text-align:center;color:var(--g400);padding:32px 0;font-size:0.9rem;}
+
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+.au{animation:fadeUp .4s ease both;}
+.d1{animation-delay:.08s;}.d2{animation-delay:.16s;}.d3{animation-delay:.24s;}
+
+/* NICK DROPDOWN */
+.nick-selector{position:relative;}
+.nick-trigger{width:100%;padding:13px 15px;border:2px solid var(--g200);border-radius:12px;background:#fff;font-family:'Noto Sans KR',sans-serif;font-size:0.95rem;color:var(--g400);cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;transition:border-color .2s;}
+.nick-trigger.selected{border-color:var(--gold);color:var(--navy);font-weight:600;}
+.nick-trigger-arrow{font-size:0.8rem;transition:transform .2s;}
+.nick-trigger.open .nick-trigger-arrow{transform:rotate(180deg);}
+.nick-list{display:none;margin-top:6px;border:2px solid var(--g200);border-radius:12px;overflow:hidden;background:#fff;box-shadow:var(--shadow2);}
+.nick-list.open{display:block;}
+.nick-list-inner{max-height:220px;overflow-y:auto;}
+.nick-item{padding:11px 16px;font-family:'Noto Sans KR',sans-serif;font-size:0.9rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .15s;border-bottom:1px solid var(--g100);}
+.nick-item:last-child{border-bottom:none;}
+.nick-item:hover:not(.used){background:#f0f4f8;}
+.nick-item.sel{background:var(--gold-light);color:var(--navy);font-weight:700;}
+.nick-item.sel::after{content:'✓';color:var(--gold);font-weight:700;}
+.nick-item.used{color:var(--g400);cursor:not-allowed;background:var(--g100);}
+.nick-item.used::after{content:'완료';font-size:0.72rem;color:var(--g400);background:var(--g200);padding:2px 7px;border-radius:8px;}
+
+/* TOAST */
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 20px;border-radius:24px;font-size:0.85rem;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
+#toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- HOME PAGE -->
+<!-- ============================================================ -->
+<div id="page-home" class="page active">
+  <div class="app-bar"><span class="app-bar-title">🏛️ 청렴 소통 MBTI 유형검사</span></div>
+  <div class="container">
+    <div class="hero au">
+      <div class="hero-seal">🔰</div>
+      <div class="hero-badge">우리 부서 청렴 성향 분석</div>
+      <h1>청렴 소통 MBTI<br>유형 검사</h1>
+      <p class="hero-sub">나의 청렴 성향을 파악하고<br>부서 전체의 청렴 프로파일을 함께 분석합니다</p>
+    </div>
+
+    <div class="card au d1">
+      <div class="card-title">📝 검사 참여</div>
+      <p class="text-sm mb12" style="color:var(--g600);line-height:1.65;">본인 번호를 선택하세요. <span style="background:var(--g200);padding:1px 6px;border-radius:6px;font-size:0.72rem;color:var(--g600);">완료</span> 표시는 이미 참여한 번호입니다.</p>
+      <div class="nick-selector">
+        <button class="nick-trigger" id="nick-trigger" onclick="toggleNickList()">
+          <span id="nick-trigger-text">번호 선택하기</span>
+          <span class="nick-trigger-arrow" id="nick-arrow">▼</span>
+        </button>
+        <div class="nick-list" id="nick-list">
+          <div class="nick-list-inner" id="nick-list-inner">
+            <div style="padding:14px;text-align:center;color:var(--g400);font-size:0.85rem;">불러오는 중...</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary mt12" id="btn-start" onclick="startSurvey()" disabled>번호를 선택해 주세요</button>
+    </div>
+
+    <div class="card au d2">
+      <div class="card-title">ℹ️ 검사 안내</div>
+      <div class="info-row">✅ <span>총 20개 문항 (약 5분 소요)</span></div>
+      <div class="info-row">✅ <span>4개 축, 16가지 청렴 유형 분류</span></div>
+      <div class="info-row">✅ <span>결과는 부서 전체 통계에 자동 반영</span></div>
+      <div class="info-row">✅ <span>닉네임만 사용 — 완전 익명 참여</span></div>
+    </div>
+
+    <button class="btn btn-outline au d3" onclick="goTo('dashboard')">📊 부서 현황 보기</button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SURVEY PAGE -->
+<!-- ============================================================ -->
+<div id="page-survey" class="page">
+  <div class="app-bar"><span class="app-bar-title">청렴MBTI 검사 진행 중</span></div>
+  <div class="container">
+    <div style="margin-top:14px;">
+      <div class="prog-wrap"><div class="prog-fill" id="prog" style="width:5%"></div></div>
+      <div class="q-meta">
+        <div id="axis-chip" class="axis-chip">축 1 · 규정/상황</div>
+        <div class="q-num"><span id="q-now">1</span> / 20</div>
+      </div>
+    </div>
+    <div class="card">
+      <div id="q-text" class="q-text">질문 로딩 중...</div>
+      <button class="ans-btn" id="btn-a" onclick="pick(0)">
+        <div class="ans-lbl">A</div>
+        <div class="ans-txt" id="a-txt"></div>
+      </button>
+      <button class="ans-btn" id="btn-b" onclick="pick(1)">
+        <div class="ans-lbl">B</div>
+        <div class="ans-txt" id="b-txt"></div>
+      </button>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-outline btn-prev" id="btn-prev" onclick="prevQ()" style="opacity:.35">← 이전</button>
+      <button class="btn btn-primary btn-next" id="btn-next" onclick="nextQ()" disabled>다음 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- RESULT PAGE -->
+<!-- ============================================================ -->
+<div id="page-result" class="page">
+  <div class="app-bar"><span class="app-bar-title">내 청렴MBTI 결과</span></div>
+  <div class="container">
+    <div class="card au" style="text-align:center;padding-top:24px;padding-bottom:24px;">
+      <div class="type-hero">
+        <div class="type-code-badge" id="r-code">RPTS</div>
+        <div class="type-name" id="r-name">청렴 원칙 리더형</div>
+        <p class="type-desc" id="r-desc"></p>
+        <div class="traits" id="r-traits"></div>
+      </div>
+    </div>
+
+    <div class="card au d1">
+      <div class="card-title">🕸️ 나의 청렴 성향 레이더</div>
+      <div style="font-size:0.75rem;color:var(--g400);margin-bottom:8px;">바깥일수록 해당 성향이 강함 — 기준선(점선) 대비 나의 위치</div>
+      <canvas id="result-spider" width="300" height="340" style="display:block;width:100%;max-width:300px;margin:0 auto;"></canvas>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;justify-content:center;" id="result-spider-legend"></div>
+    </div>
+
+    <div class="card au d1">
+      <div class="card-title">🔬 청렴 성향 프로파일 분석</div>
+      <div class="chart-subtitle">웩슬러식 축별 성향 점수 — 기준선(50%) 대비 나의 위치</div>
+      <div class="chart-wrap">
+        <canvas id="wschart" width="340" height="240" style="width:100%;display:block;"></canvas>
+      </div>
+      <div class="axis-score-grid" id="axis-cards"></div>
+    </div>
+
+    <div class="card au d2">
+      <div class="edu-chip">맞춤 교육 추천</div>
+      <div class="edu-name" id="r-edu"></div>
+      <p class="edu-desc" id="r-edu-desc"></p>
+    </div>
+
+    <div class="card au d2">
+      <div class="card-title">🧭 나의 청렴 소통 가이드라인</div>
+      <div id="r-guide"></div>
+    </div>
+
+    <button class="btn btn-gold au d3" onclick="goTo('dashboard')">📊 우리 부서 현황 보기</button>
+    <button class="btn btn-outline" onclick="goTo('home')">🔄 처음으로</button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DASHBOARD PAGE -->
+<!-- ============================================================ -->
+<div id="page-dashboard" class="page">
+  <div class="app-bar"><span class="app-bar-title">📊 부서 청렴MBTI 현황</span></div>
+  <div class="container" id="dash-body">
+    <div class="empty-msg mt20">데이터를 불러오는 중...</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ADMIN PAGE -->
+<!-- ============================================================ -->
+<div id="page-admin" class="page">
+  <div class="app-bar"><span class="app-bar-title">⚙️ 관리자</span></div>
+  <div class="container">
+    <div class="card mt16" id="admin-login">
+      <div class="card-title">🔒 관리자 로그인</div>
+      <input id="pw-inp" class="inp" type="password" placeholder="관리자 비밀번호" onkeydown="if(event.key==='Enter')adminLogin()">
+      <button class="btn btn-primary mt12" onclick="adminLogin()">로그인</button>
+    </div>
+    <div id="admin-panel" class="hidden"></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bnav-btn on" id="nb-home" onclick="goTo('home')"><span class="ic">🏠</span>홈</button>
+  <button class="bnav-btn" id="nb-survey" onclick="resumeSurvey()"><span class="ic">📝</span>검사</button>
+  <button class="bnav-btn" id="nb-result" onclick="goTo('result')"><span class="ic">📋</span>내 결과</button>
+  <button class="bnav-btn" id="nb-dashboard" onclick="goTo('dashboard')"><span class="ic">📊</span>현황</button>
+  <button class="bnav-btn" id="nb-admin" onclick="goTo('admin')"><span class="ic">⚙️</span>관리자</button>
+</nav>
+<div id="toast"></div>
+
+<script>
+/* ============================================================
+   ★ FIREBASE 설정
+   ============================================================ */
+const FB_CFG = {
+  apiKey:            "AIzaSyCrwTEZb9DG_EcRnYmsmFGyRUkVl2pTC8k",
+  authDomain:        "mbti-30e55.firebaseapp.com",
+  projectId:         "mbti-30e55",
+  storageBucket:     "mbti-30e55.firebasestorage.app",
+  messagingSenderId: "173642223284",
+  appId:             "1:173642223284:web:6862c06e3f494a924251e1"
+};
+const ADMIN_PW   = "admin1234";
+const TOTAL_MEMS = 57;
+const DB_COL     = "results";
+
+let db = null, useDB = false;
+
+/* SDK를 순서대로 동적 로드 후 초기화 */
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = resolve; s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+// 여러 CDN 소스 시도
+const FB_SRCS = [
+  [
+    'https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',
+    'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js',
+  ],
+  [
+    'https://cdn.jsdelivr.net/npm/firebase@10.12.0/firebase-app-compat.min.js',
+    'https://cdn.jsdelivr.net/npm/firebase@10.12.0/firebase-firestore-compat.min.js',
+  ],
+  [
+    'https://unpkg.com/firebase@10.12.0/firebase-app-compat.js',
+    'https://unpkg.com/firebase@10.12.0/firebase-firestore-compat.js',
+  ]
+];
+
+async function tryLoadFirebase() {
+  for (const srcs of FB_SRCS) {
+    try {
+      for (const src of srcs) await loadScript(src);
+      return true;
+    } catch(e) {
+      console.warn('CDN 실패, 다음 시도:', srcs[0]);
+      document.querySelectorAll('script[src*="firebase"]').forEach(s => s.remove());
+    }
+  }
+  return false;
+}
+
+// 앱 시작점
+(async () => {
+  try {
+    const loaded = await tryLoadFirebase();
+    if (!loaded) throw new Error('모든 CDN 실패');
+    if (!firebase.apps.length) firebase.initializeApp(FB_CFG);
+    db = firebase.firestore();
+    useDB = true;
+    console.log('✅ Firebase 연결 성공');
+  } catch(e) {
+    console.warn('⚠️ Firebase 연결 실패, localStorage 모드:', e.message);
+    useDB = false;
+  }
+  initNickGrid();
+})();
+
+/* ============================================================
+   20 QUESTIONS (4축 × 5문항)
+   Axis 0: R(규정준수) vs I(상황판단)  → A=R, B=I
+   Axis 1: P(공익중심) vs C(관계중심)  → A=P, B=C
+   Axis 2: T(투명엄격) vs E(실천중심)  → A=T, B=E
+   Axis 3: S(원칙실천) vs A(유연대응)  → A=S, B=A
+   ============================================================ */
+const QS = [
+  // ── Axis 0: 규정/상황 (Q1~Q5) ──
+  { ax:0, al:"축 1 · 규정/상황", ac:"#1e4d7b", ab:"#dde8f5",
+    q:"업무를 처리할 때 나는...",
+    a:"규정과 절차를 정확히 따르는 것이 가장 중요하다고 생각한다",
+    b:"상황과 맥락을 먼저 파악하여 유연하게 대처하는 편이다" },
+  { ax:0, al:"축 1 · 규정/상황", ac:"#1e4d7b", ab:"#dde8f5",
+    q:"예외적인 상황이 발생했을 때 나는...",
+    a:"예외 없이 규정을 적용해야 조직의 청렴도가 유지된다고 본다",
+    b:"상황의 특수성을 인정하고 그에 맞는 판단이 필요하다고 본다" },
+  { ax:0, al:"축 1 · 규정/상황", ac:"#1e4d7b", ab:"#dde8f5",
+    q:"동료의 규정 위반을 발견했을 때 나는...",
+    a:"상황에 관계없이 즉시 지적하거나 보고해야 한다고 생각한다",
+    b:"위반의 경위와 상황을 먼저 파악한 후 적절한 방식으로 대응한다" },
+  { ax:0, al:"축 1 · 규정/상황", ac:"#1e4d7b", ab:"#dde8f5",
+    q:"새로운 업무 지침이 생겼을 때 나는...",
+    a:"지침의 내용을 정확히 숙지하고 그대로 따르는 것을 우선한다",
+    b:"지침의 도입 배경과 취지를 이해한 후 상황에 맞게 적용한다" },
+  { ax:0, al:"축 1 · 규정/상황", ac:"#1e4d7b", ab:"#dde8f5",
+    q:"규정이 현실 업무와 맞지 않는 상황에서 나는...",
+    a:"규정을 기준으로 업무 방식을 맞추는 것이 맞다고 생각한다",
+    b:"규정 개선을 건의하면서 현실에 맞는 방법을 찾아 행동한다" },
+
+  // ── Axis 1: 공익/관계 (Q6~Q10) ──
+  { ax:1, al:"축 2 · 공익/관계", ac:"#2a6a47", ab:"#d6f0e0",
+    q:"업무 결정을 내릴 때 가장 중요하게 고려하는 것은...",
+    a:"시민·국민에 대한 공익과 공정한 서비스 제공이다",
+    b:"동료·팀원과의 협력과 신뢰 관계 유지이다" },
+  { ax:1, al:"축 2 · 공익/관계", ac:"#2a6a47", ab:"#d6f0e0",
+    q:"친한 지인이 부당한 청탁을 해올 경우 나는...",
+    a:"관계와 상관없이 단호하게 거절하는 것이 맞다고 생각한다",
+    b:"관계를 고려하여 부드럽지만 분명하게 거절 의사를 전한다" },
+  { ax:1, al:"축 2 · 공익/관계", ac:"#2a6a47", ab:"#d6f0e0",
+    q:"청렴 문화의 가장 중요한 토대는...",
+    a:"업무의 투명한 공개와 결과에 대한 공정한 책임이다",
+    b:"구성원 간의 상호 신뢰와 협력적인 조직 분위기이다" },
+  { ax:1, al:"축 2 · 공익/관계", ac:"#2a6a47", ab:"#d6f0e0",
+    q:"이해충돌이 발생하는 상황에서 나는...",
+    a:"개인적 관계보다 공익을 명확히 우선시하는 결정을 내린다",
+    b:"대화와 협의를 통해 모두에게 납득 가능한 방안을 모색한다" },
+  { ax:1, al:"축 2 · 공익/관계", ac:"#2a6a47", ab:"#d6f0e0",
+    q:"청렴하게 행동하는 가장 큰 이유는...",
+    a:"시민과 사회에 대한 공직자로서의 책임감 때문이다",
+    b:"동료와 조직에 대한 신뢰와 책임감 때문이다" },
+
+  // ── Axis 2: 투명/실천 (Q11~Q15) ──
+  { ax:2, al:"축 3 · 투명/실천", ac:"#7b4f1a", ab:"#fdf0d8",
+    q:"청렴 실천에 있어 더 중요한 것은...",
+    a:"업무 과정을 투명하게 공개하고 기록을 철저히 남기는 것이다",
+    b:"일상 업무에서 청렴한 행동을 꾸준히 실천하는 것이다" },
+  { ax:2, al:"축 3 · 투명/실천", ac:"#7b4f1a", ab:"#fdf0d8",
+    q:"부정청탁이나 비위 문제가 발생했을 때 나는...",
+    a:"공개적인 책임 규명과 절차에 따른 처리가 우선이라고 본다",
+    b:"실질적인 개선과 재발 방지 조치 마련이 더 시급하다고 본다" },
+  { ax:2, al:"축 3 · 투명/실천", ac:"#7b4f1a", ab:"#fdf0d8",
+    q:"청렴 업무 관리에 있어 나는...",
+    a:"기록과 보고 체계를 잘 갖추는 것이 핵심이라고 생각한다",
+    b:"청렴 가치를 일상 업무에 자연스럽게 녹여내는 것이 핵심이다" },
+  { ax:2, al:"축 3 · 투명/실천", ac:"#7b4f1a", ab:"#fdf0d8",
+    q:"청렴도 검증에 대해 나는...",
+    a:"외부 감사나 제3자 검증을 통해 객관적으로 확인받아야 한다",
+    b:"내부 구성원의 자발적 실천이 외부 검증보다 더 가치 있다" },
+  { ax:2, al:"축 3 · 투명/실천", ac:"#7b4f1a", ab:"#fdf0d8",
+    q:"청렴 위반 사항을 인지했을 때 나는...",
+    a:"반드시 공식 보고 체계를 통해 처리해야 한다고 생각한다",
+    b:"실질적인 개선 행동을 취하는 것이 더 중요하다고 생각한다" },
+
+  // ── Axis 3: 원칙/유연 (Q16~Q20) ──
+  { ax:3, al:"축 4 · 원칙/유연", ac:"#5b2d7b", ab:"#ede8f5",
+    q:"청렴 원칙 실천에 있어 나는...",
+    a:"어떤 상황에서도 일관되게 동일한 기준을 적용해야 한다",
+    b:"상황과 맥락에 따라 유연하게 접근하는 것이 현실적이다" },
+  { ax:3, al:"축 4 · 원칙/유연", ac:"#5b2d7b", ab:"#ede8f5",
+    q:"주변에서 청렴하지 않은 행동을 목격할 경우 나는...",
+    a:"적극적으로 지적하고 바로잡으려는 행동을 취한다",
+    b:"상황과 관계를 신중하게 고려하며 조심스럽게 접근한다" },
+  { ax:3, al:"축 4 · 원칙/유연", ac:"#5b2d7b", ab:"#ede8f5",
+    q:"청렴 관련 교육이나 캠페인에 대해 나는...",
+    a:"적극적으로 참여하고 주변에도 독려하는 편이다",
+    b:"조직 분위기에 맞춰 참여 방식을 조율하는 편이다" },
+  { ax:3, al:"축 4 · 원칙/유연", ac:"#5b2d7b", ab:"#ede8f5",
+    q:"청렴 행동 기준에 대해 나는...",
+    a:"명확하고 일관된 기준이 정해져 있어야 한다고 생각한다",
+    b:"기준은 있되 상황에 따라 탄력적으로 적용될 수 있다고 본다" },
+  { ax:3, al:"축 4 · 원칙/유연", ac:"#5b2d7b", ab:"#ede8f5",
+    q:"청렴 가치관 표현에 있어 나는...",
+    a:"내 청렴 가치관을 명확히 표현하고 주위에 전파하는 편이다",
+    b:"조직 문화와 분위기 안에서 자연스럽게 실천하는 편이다" }
+];
+
+/* ============================================================
+   16 TYPES  (key = Axis0Axis1Axis2Axis3, A→첫글자 B→둘째글자)
+   R/I × P/C × T/E × S/A
+   ============================================================ */
+const TYPES = {
+  RPTS:{ name:"청렴 원칙 리더형",
+    traits:["원칙 중심","책임감 강함","모범 직원"],
+    desc:"규정 준수와 투명성을 가장 중요하게 생각하는 유형입니다. 조직 내 청렴 문화 확산에 적극 기여하며, 원칙과 책임감을 바탕으로 청렴 리더십을 발휘합니다.",
+    edu:"청렴 리더 교육",
+    eduDesc:"청렴 리더로서의 역할과 영향력 확대 방안, 조직 내 청렴 문화 조성 전략을 학습합니다.",
+    guide:[
+      "✅ 업무 처리 시 규정 기준을 명확히 제시하여 팀원들의 방향을 잡아주세요.",
+      "✅ 청렴 관련 이슈를 발견하면 주저하지 말고 공식 채널을 통해 적극 의견을 내세요.",
+      "⚠️ 원칙을 강조하다 보면 동료가 부담을 느낄 수 있으니 소통 방식은 부드럽게 유지하세요.",
+      "💬 소통 팁: 지시보다는 '함께 기준을 만들자'는 방식으로 팀원을 이끌면 더 효과적입니다."
+    ]},
+  RPTA:{ name:"청렴 균형형",
+    traits:["합리적 판단","안정적 업무","균형 감각"],
+    desc:"규정 준수를 기본으로 하면서도 상황 대응 능력을 갖춘 유형입니다. 조직 내 협력과 청렴을 동시에 고려하며 합리적이고 안정적인 업무 스타일이 특징입니다.",
+    edu:"청렴 리더 교육",
+    eduDesc:"청렴한 업무 수행과 조직 협력의 균형을 위한 실무 중심 교육입니다.",
+    guide:[
+      "✅ 규정과 현실 사이에서 합리적인 중재자 역할을 자연스럽게 할 수 있는 강점이 있어요.",
+      "✅ 의견 충돌 상황에서 양쪽의 입장을 균형 있게 정리해 주는 역할을 맡아보세요.",
+      "⚠️ 양면을 고려하다 결정이 늦어질 수 있으니 기준 시점을 미리 정해두는 것이 좋아요.",
+      "💬 소통 팁: '규정도 중요하고 상황도 이해한다'는 양면적 공감이 팀 신뢰를 높입니다."
+    ]},
+  RPES:{ name:"공익 실천형",
+    traits:["시민 중심","공정성","책임 있는 업무"],
+    desc:"공공기관의 공익성과 시민 서비스를 중시하는 유형입니다. 공정성과 청렴성을 균형 있게 고려하며 시민에 대한 책임감을 바탕으로 업무를 수행합니다.",
+    edu:"청렴 리더 교육",
+    eduDesc:"공익 실현을 위한 청렴 실천 방법론과 시민 서비스 중심의 업무 태도를 강화합니다.",
+    guide:[
+      "✅ '이 업무가 시민에게 어떤 영향을 주는가'를 항상 팀 논의의 출발점으로 삼아보세요.",
+      "✅ 공정한 절차와 결과를 중시하는 성향으로 감사·검토 업무에서 강점을 발휘합니다.",
+      "⚠️ 공익을 지나치게 강조하면 내부 관계가 소홀해질 수 있으니 팀원 소통도 챙기세요.",
+      "💬 소통 팁: 업무 결과를 공유할 때 '우리가 만든 공익적 가치'를 함께 언급하면 동기부여가 됩니다."
+    ]},
+  RPEA:{ name:"협력 청렴형",
+    traits:["협력적","관계 중심","높은 청렴 의식"],
+    desc:"공익과 협력을 동시에 중요하게 생각하는 유형입니다. 청렴 의식은 높으나 조직 관계도 중시하며, 협력적 방식으로 청렴을 실천합니다.",
+    edu:"이해충돌 방지 교육",
+    eduDesc:"이해충돌 상황에서 공익과 관계를 균형 있게 고려하는 판단력을 기릅니다.",
+    guide:[
+      "✅ 팀 내 협업 분위기를 만드는 데 자연스러운 역할을 합니다. 회의 진행자나 조율자로 활약하세요.",
+      "✅ 청렴 가치와 관계 유지를 함께 추구하므로 부서 내 신뢰 형성에 큰 기여를 합니다.",
+      "⚠️ 관계를 해치기 싫어서 청렴 위반을 묵인하는 상황이 생기지 않도록 주의하세요.",
+      "💬 소통 팁: '우리 사이니까 더 솔직하게 말할게요'라는 신뢰 기반 피드백이 효과적입니다."
+    ]},
+  RCTS:{ name:"엄격 준수형",
+    traits:["원칙주의","규정 중심","엄격한 기준"],
+    desc:"규정과 절차를 철저히 준수하는 유형입니다. 청렴 기준이 매우 엄격하며 원칙주의적이고 규정 중심의 업무 스타일이 특징입니다.",
+    edu:"규정 및 법령 교육",
+    eduDesc:"청렴 관련 법령과 규정을 심화 학습하고 실무 적용 능력을 강화합니다.",
+    guide:[
+      "✅ 규정 준수가 완벽해 감사나 점검 업무에서 신뢰받는 역할을 합니다.",
+      "✅ 팀원들에게 규정의 중요성을 구체적인 사례로 알려주는 역할을 해보세요.",
+      "⚠️ 엄격한 기준이 때로는 팀 분위기를 경직시킬 수 있으니 유연한 표현 방식을 연습해보세요.",
+      "💬 소통 팁: '규정이 이래서 안 돼요'보다 '이렇게 하면 규정도 지키고 더 잘 될 것 같아요'가 훨씬 잘 통합니다."
+    ]},
+  RCTA:{ name:"투명 책임형",
+    traits:["투명성 강조","책임감 강함","문제 해결"],
+    desc:"업무 공개와 책임성을 중요하게 생각하는 유형입니다. 문제 발생 시 적극 해결하려는 의지가 강하며 투명성과 책임감이 강한 것이 특징입니다.",
+    edu:"규정 및 법령 교육",
+    eduDesc:"투명한 업무 처리와 책임 있는 공직 수행을 위한 법적 근거와 실무 지식을 제공합니다.",
+    guide:[
+      "✅ 업무 진행 상황을 투명하게 공유하는 습관이 팀 전체의 신뢰도를 높여줍니다.",
+      "✅ 문제가 생겼을 때 회피하지 않고 정면 돌파하는 태도가 팀의 든든한 버팀목이 됩니다.",
+      "⚠️ 책임 추궁에 집중하다 보면 팀 분위기가 위축될 수 있으니 개선 중심으로 접근하세요.",
+      "💬 소통 팁: 문제 발생 시 '누가 잘못했나'보다 '어떻게 고칠까'로 대화를 이끌어 보세요."
+    ]},
+  RCES:{ name:"청렴 실천형",
+    traits:["실천 중심","모범적","조직 기여"],
+    desc:"일상 업무에서 청렴을 적극적으로 실천하는 유형입니다. 조직 내 청렴 분위기 형성에 기여하며 실천 중심의 모범 공직자 상을 보여줍니다.",
+    edu:"청탁금지법 교육",
+    eduDesc:"청탁금지법의 세부 내용과 실생활 적용 사례를 통해 청렴 실천 역량을 높입니다.",
+    guide:[
+      "✅ 작은 실천 하나하나가 부서 청렴 문화의 씨앗이 됩니다. 지금처럼 꾸준히 해주세요.",
+      "✅ 본인의 실천 경험을 팀원들과 자연스럽게 나누면 주변에도 좋은 영향을 줍니다.",
+      "⚠️ 혼자 앞서 나가다 지치지 않도록 팀 전체가 함께 실천하는 문화를 만들어 가세요.",
+      "💬 소통 팁: '저는 이렇게 하고 있어요'라는 경험 공유 방식이 강요보다 훨씬 효과적입니다."
+    ]},
+  RCEA:{ name:"원칙 협력형",
+    traits:["안정적","팀워크 중시","높은 신뢰도"],
+    desc:"규정을 지키면서도 조직 협력을 중요하게 생각하는 유형입니다. 부서 내 신뢰도가 높으며 안정적이고 팀워크를 중시하는 방식으로 청렴을 실천합니다.",
+    edu:"이해충돌 방지 교육",
+    eduDesc:"조직 협력과 청렴 원칙의 균형 유지 방법과 이해충돌 예방 전략을 학습합니다.",
+    guide:[
+      "✅ 팀 내 신뢰의 중심 역할로, 갈등 상황에서 중립적인 조정자가 되어줄 수 있어요.",
+      "✅ 원칙과 협력을 동시에 챙기는 스타일로 장기 프로젝트에서 팀 안정에 크게 기여합니다.",
+      "⚠️ 협력을 중시하다 자기 의견을 못 내는 상황이 생길 수 있으니 적극적 발언도 연습하세요.",
+      "💬 소통 팁: '함께 정한 규칙은 함께 지키자'는 공동 책임감 메시지가 팀에 잘 먹힙니다."
+    ]},
+  IPTS:{ name:"상황 판단 청렴형",
+    traits:["문제 해결 우수","유연한 처리","청렴 의식"],
+    desc:"상황 판단 능력이 뛰어나면서 청렴 의식도 유지하는 유형입니다. 유연한 업무 처리가 가능하고 문제 해결 능력이 우수합니다.",
+    edu:"규정 및 법령 교육",
+    eduDesc:"다양한 상황에서의 청렴 판단력을 높이기 위한 사례 중심 교육을 제공합니다.",
+    guide:[
+      "✅ 복잡한 상황에서도 청렴 원칙을 지키면서 유연하게 대처하는 능력이 탁월합니다.",
+      "✅ 예외 상황 발생 시 판단 기준을 팀원들에게 명확히 설명해 주면 모두에게 도움이 됩니다.",
+      "⚠️ 상황 판단이 주관적이 되지 않도록 주요 결정은 팀원과 함께 논의하는 습관을 가지세요.",
+      "💬 소통 팁: '이 상황에서는 이렇게 판단한 이유가 있어요'라고 근거를 설명하면 신뢰가 높아집니다."
+    ]},
+  IPTA:{ name:"유연 실무형",
+    traits:["현실적 판단","실무 중심","균형 고려"],
+    desc:"실무 중심의 업무 스타일을 가진 유형입니다. 규정과 현실을 균형 있게 고려하며 현실적인 판단력으로 청렴을 실천합니다.",
+    edu:"규정 및 법령 교육",
+    eduDesc:"실무 환경에서의 청렴 규정 적용 방법과 현실적인 청렴 실천 방안을 학습합니다.",
+    guide:[
+      "✅ 현실적인 감각으로 실행 가능한 청렴 실천 방안을 제안하는 역할을 해보세요.",
+      "✅ '이건 현실적으로 이렇게 하면 됩니다'라는 구체적 제안이 팀에 큰 도움이 됩니다.",
+      "⚠️ 현실 편의를 너무 따르다 보면 원칙이 흔들릴 수 있으니 기준선을 명확히 유지하세요.",
+      "💬 소통 팁: 실무 경험에서 나온 노하우를 팀과 공유하면 자연스러운 청렴 가이드가 됩니다."
+    ]},
+  IPES:{ name:"공익 협력형",
+    traits:["시민 서비스","협력 해결","공익 중심"],
+    desc:"공익 중심의 업무를 수행하면서 협력 관계를 통해 문제를 해결하는 유형입니다. 시민 서비스를 중시하며 협력적인 방식으로 청렴을 실천합니다.",
+    edu:"이해충돌 방지 교육",
+    eduDesc:"공익 실현과 조직 협력의 균형, 이해충돌 예방을 위한 교육을 제공합니다.",
+    guide:[
+      "✅ 시민과 조직 모두를 위한 해결책을 찾는 능력이 뛰어나 민원 대응 업무에서 강합니다.",
+      "✅ 협력 중심의 문제해결 방식으로 부서 간 소통이 필요한 업무에서 가교 역할을 하세요.",
+      "⚠️ 모두를 만족시키려다 결정이 흐려질 수 있으니 공익 기준을 최우선으로 삼으세요.",
+      "💬 소통 팁: '우리가 협력하면 시민에게 더 좋은 서비스를 줄 수 있어요'가 팀 동기부여에 효과적입니다."
+    ]},
+  IPEA:{ name:"실무 협력형",
+    traits:["업무 효율","실무형 직원","협력 중시"],
+    desc:"실무 효율과 협력을 중요하게 생각하는 유형입니다. 조직 내 실무형 직원으로서 업무 효율 중심의 청렴 실천 방식을 가지고 있습니다.",
+    edu:"청탁금지법 교육",
+    eduDesc:"실무 효율과 청렴 원칙의 조화를 위한 청탁금지법 실무 적용 교육을 제공합니다.",
+    guide:[
+      "✅ 효율적인 업무 방식과 협력 능력으로 팀 전체의 생산성을 높이는 역할을 합니다.",
+      "✅ 팀워크가 강하므로 청렴 실천도 '함께하는 프로젝트'처럼 접근하면 효과적입니다.",
+      "⚠️ 효율만 추구하다 청렴 절차를 간소화하려는 유혹이 생길 수 있으니 주의하세요.",
+      "💬 소통 팁: '빠르게 + 바르게' 두 가지를 동시에 추구한다는 팀 슬로건을 만들어 보세요."
+    ]},
+  ICTS:{ name:"관계 중심형",
+    traits:["조직 친화형","관계 유지","청렴 의식 강화 필요"],
+    desc:"조직 관계 유지와 협력을 중요하게 생각하는 유형입니다. 청렴 의식 강화가 필요하며, 조직 친화적인 스타일이 특징입니다.",
+    edu:"청탁금지법 교육",
+    eduDesc:"청탁금지법의 핵심 내용을 학습하고 조직 관계에서의 청렴 경계를 명확히 합니다.",
+    guide:[
+      "✅ 팀 내 인간관계가 좋아 소통과 협력이 필요한 업무에서 윤활유 역할을 합니다.",
+      "✅ 관계를 활용해 청렴 문화를 자연스럽게 전파하는 역할도 충분히 할 수 있어요.",
+      "⚠️ 관계 유지를 위해 잘못된 행동을 묵인하지 않도록 청렴 기준을 개인 원칙으로 세우세요.",
+      "💬 소통 팁: '우리 사이이기 때문에 더 솔직하게 말하는 것'이 진짜 좋은 관계임을 기억하세요."
+    ]},
+  ICTA:{ name:"상황 대응형",
+    traits:["적응력 높음","상황 맞춤 행동","청렴 교육 필요"],
+    desc:"상황과 조직 분위기에 맞게 행동하는 유형입니다. 적응력이 높으나 청렴 의식 향상 교육이 필요하며, 자신만의 청렴 가치관을 명확히 정립할 필요가 있습니다.",
+    edu:"청탁금지법 교육",
+    eduDesc:"다양한 상황에서 일관된 청렴 기준을 유지하는 방법을 교육합니다.",
+    guide:[
+      "✅ 어떤 환경에도 빠르게 적응하는 능력이 변화하는 업무 환경에서 큰 강점입니다.",
+      "✅ 다양한 상황 경험을 바탕으로 팀원들에게 현실적인 조언을 줄 수 있는 포지션입니다.",
+      "⚠️ 상황에 따라 기준이 흔들릴 수 있으니 나만의 청렴 원칙 3가지를 정해두고 지켜보세요.",
+      "💬 소통 팁: '상황은 달라도 우리 원칙은 같다'는 일관된 메시지를 팀에 전달해 보세요."
+    ]},
+  ICES:{ name:"관계 협력형",
+    traits:["협력적","조직 적응","관계 조정"],
+    desc:"조직 관계와 협력을 중요하게 생각하는 유형입니다. 청렴 의식은 있으나 관계 조정 중심으로 행동하며 협력적이고 조직 적응력이 높습니다.",
+    edu:"이해충돌 방지 교육",
+    eduDesc:"조직 관계에서 발생할 수 있는 이해충돌 상황과 예방 방법을 학습합니다.",
+    guide:[
+      "✅ 갈등 상황에서 양측의 입장을 조율하는 협상가 역할을 자연스럽게 할 수 있습니다.",
+      "✅ 관계와 청렴 모두를 중시하므로 팀 내 신뢰 기반의 청렴 문화 조성에 적합합니다.",
+      "⚠️ 이해충돌이 발생할 때 관계 때문에 공정한 판단이 흐려지지 않도록 주의하세요.",
+      "💬 소통 팁: '관계를 지키는 가장 좋은 방법은 서로에게 공정한 것'이라는 원칙을 공유해 보세요."
+    ]},
+  ICEA:{ name:"유연 대응형",
+    traits:["융통성 높음","적응형","규정 준수 의식 강화 필요"],
+    desc:"상황에 따라 유연하게 대응하는 유형입니다. 적응력과 융통성이 높으나 규정 준수 의식 강화가 필요하며, 청렴 기준을 명확히 정립할 필요가 있습니다.",
+    edu:"청탁금지법 교육",
+    eduDesc:"청렴 기준과 규정 준수의 중요성을 이해하고 일관된 청렴 실천 방법을 교육합니다.",
+    guide:[
+      "✅ 융통성 있는 대응력으로 다양한 민원·상황 대처에 능하고 팀의 유연성을 높여줍니다.",
+      "✅ 변화에 강한 성향을 살려 새로운 청렴 제도나 정책을 가장 먼저 습득해 팀에 전파해 보세요.",
+      "⚠️ 유연함이 원칙 없음으로 이어지지 않도록 '이것만은 절대 안 된다'는 선을 명확히 세우세요.",
+      "💬 소통 팁: '유연하게 하되 기본은 지킨다'는 메시지로 팀원들에게 긍정적인 모델이 되어보세요."
+    ]}
+};
+
+const AXIS_COLS = ["#1e4d7b","#2a6a47","#7b4f1a","#5b2d7b"];
+const AXIS_NAMES = [
+  { a:"규정 준수", b:"상황 판단", label:"규정/상황" },
+  { a:"공익 중심", b:"관계 중심", label:"공익/관계" },
+  { a:"투명 엄격", b:"실천 중심", label:"투명/실천" },
+  { a:"원칙 실천", b:"유연 대응", label:"원칙/유연" }
+];
+
+/* ============================================================
+   APP STATE
+   ============================================================ */
+const S = {
+  page: 'home',
+  nick: '',
+  qi: 0,
+  ans: new Array(20).fill(null),
+  result: null,
+  adminIn: false
+};
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function goTo(page){
+  // 결과 페이지 — localStorage에서 항상 복원 시도
+  if(page==='result'){
+    if(!S.result){
+      const saved = localStorage.getItem('c_last_result');
+      if(saved){
+        try{
+          const d = JSON.parse(saved);
+          S.result = { code:d.code, type:TYPES[d.code]||TYPES['RPTS'], scores:[], pcts:d.pcts||[50,50,50,50], letters:d.letters||['R','P','T','S'], nick:d.nick, ts:d.ts };
+        }catch(e){ console.warn('결과 복원 실패',e); }
+      }
+    }
+    if(!S.result){ toast("먼저 검사를 완료해 주세요"); return; }
+  }
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('on'));
+  const nb=document.getElementById('nb-'+page);
+  if(nb) nb.classList.add('on');
+  S.page=page;
+  window.scrollTo(0,0);
+  if(page==='dashboard') renderDash();
+  if(page==='result' && S.result) renderResult();
+  if(page==='home') initNickGrid(); // 홈 올 때마다 그리드 갱신
+  if(page==='admin'){ document.getElementById('admin-login').classList.remove('hidden'); document.getElementById('admin-panel').classList.add('hidden'); S.adminIn=false; }
+}
+
+function resumeSurvey(){
+  if(!S.nick){ toast("닉네임을 먼저 입력해 주세요"); goTo('home'); return; }
+  goTo('survey');
+}
+
+/* ============================================================
+   SURVEY
+   ============================================================ */
+function startSurvey(){
+  if(!S.nick){ toast("번호를 선택해 주세요"); return; }
+  S.ans=new Array(20).fill(null);
+  S.qi=0;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-survey').classList.add('active');
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('nb-survey').classList.add('on');
+  S.page='survey';
+  window.scrollTo(0,0);
+  renderQ();
+}
+
+function renderQ(){
+  const q=QS[S.qi];
+  document.getElementById('prog').style.width=((S.qi+1)/20*100)+'%';
+  document.getElementById('q-now').textContent=S.qi+1;
+  const chip=document.getElementById('axis-chip');
+  chip.textContent=q.al; chip.style.background=q.ab; chip.style.color=q.ac;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('a-txt').textContent=q.a;
+  document.getElementById('b-txt').textContent=q.b;
+  const ba=document.getElementById('btn-a'), bb=document.getElementById('btn-b');
+  ba.classList.remove('sel'); bb.classList.remove('sel');
+  if(S.ans[S.qi]===0) ba.classList.add('sel');
+  if(S.ans[S.qi]===1) bb.classList.add('sel');
+  document.getElementById('btn-next').disabled=(S.ans[S.qi]===null);
+  document.getElementById('btn-prev').style.opacity=S.qi===0?'.3':'1';
+  document.getElementById('btn-next').textContent=S.qi===19?'결과 보기 →':'다음 →';
+}
+
+function pick(v){
+  S.ans[S.qi]=v;
+  document.getElementById('btn-a').classList.toggle('sel',v===0);
+  document.getElementById('btn-b').classList.toggle('sel',v===1);
+  document.getElementById('btn-next').disabled=false;
+}
+
+function nextQ(){
+  if(S.ans[S.qi]===null) return;
+  if(S.qi===19){ calcResult(); return; }
+  S.qi++; renderQ();
+}
+function prevQ(){ if(S.qi>0){S.qi--;renderQ();} }
+
+/* ============================================================
+   RESULT CALCULATION
+   ============================================================ */
+async function calcResult(){
+  // A=첫 글자, B=두번째 글자
+  // Axis0: R/I, Axis1: P/C, Axis2: T/E, Axis3: S/A
+  const scores=[0,0,0,0]; // A count per axis
+  for(let i=0;i<20;i++){ if(S.ans[i]===0) scores[Math.floor(i/5)]++; }
+  const letters=['R','I','P','C','T','E','S','A'];
+  const L=[
+    scores[0]>=3?'R':'I',
+    scores[1]>=3?'P':'C',
+    scores[2]>=3?'T':'E',
+    scores[3]>=3?'S':'A'
+  ];
+  const code=L.join('');
+  const pcts=scores.map(s=>Math.round(s/5*100));
+  S.result={ code, type:TYPES[code]||TYPES['RPTS'], scores, pcts, letters:L, nick:S.nick, ts:new Date().toISOString() };
+  // localStorage에 결과 저장 (페이지 이동해도 유지)
+  localStorage.setItem('c_last_result', JSON.stringify({code, pcts, letters:L, nick:S.nick, ts:S.result.ts}));
+  // 저장은 백그라운드로 — 저장 실패해도 결과 페이지는 바로 이동
+  saveResult(S.result).catch(e => console.warn('저장 오류:', e));
+  S.nick='';
+  localStorage.removeItem('c_nick');
+  const startBtn=document.getElementById('btn-start');
+  if(startBtn){ startBtn.disabled=true; startBtn.textContent='번호를 선택해 주세요'; }
+  const trigger=document.getElementById('nick-trigger');
+  if(trigger){ trigger.classList.remove('selected'); document.getElementById('nick-trigger-text').textContent='번호 선택하기'; }
+  goTo('result');
+}
+
+/* ============================================================
+   RENDER RESULT
+   ============================================================ */
+function renderResult(){
+  const r=S.result, t=r.type;
+  document.getElementById('r-code').textContent=r.code;
+  document.getElementById('r-name').textContent=t.name;
+  document.getElementById('r-desc').textContent=t.desc;
+  document.getElementById('r-traits').innerHTML=t.traits.map(x=>`<span class="trait">✦ ${x}</span>`).join('');
+  document.getElementById('r-edu').textContent=t.edu;
+  document.getElementById('r-edu-desc').textContent=t.eduDesc;
+  const guideEl=document.getElementById('r-guide');
+  if(t.guide){
+    guideEl.innerHTML=t.guide.map(g=>`
+      <div style="padding:9px 0;border-bottom:1px solid var(--g100);font-size:0.87rem;line-height:1.6;color:#333;">${g}</div>
+    `).join('');
+  }
+  setTimeout(()=>{
+    drawWechsler(r);
+    drawResultSpider(r);
+  }, 500);
+  renderAxisCards(r);
+}
+
+/* ============================================================
+   개인 결과 레이더 차트 — 원형 그리드 + 컬러 아크 스타일
+   ============================================================ */
+function drawResultSpider(r){
+  const cv = document.getElementById('result-spider');
+  if(!cv) return;
+  const W = 300, H = 340;
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  const cx = W/2, cy = H/2 + 10;  // 중심 살짝 아래로
+  const R = 90;       // 데이터 최대 반경
+  const ARC_R = 112;  // 외부 컬러 아크 반경
+  const N = 4;
+
+  const labels  = ['규정/상황','공익/관계','투명/실천','원칙/유연'];
+  const subA    = ['규정준수','공익중심','투명엄격','원칙실천'];
+  const subB    = ['상황판단','관계중심','실천중심','유연대응'];
+  const colors  = AXIS_COLS;
+
+  const pcts = (r.pcts && r.pcts.length===4) ? r.pcts : [50,50,50,50];
+  const vals = pcts.map(p => p/100);
+
+  const angle = i => (Math.PI*2*i/N) - Math.PI/2;
+  const pt    = (i, rr) => ({ x: cx + rr*Math.cos(angle(i)), y: cy + rr*Math.sin(angle(i)) });
+
+  ctx.clearRect(0,0,W,H);
+
+  // ── 원형 배경 그리드 ──
+  [0.25,0.5,0.75,1.0].forEach(s=>{
+    ctx.beginPath();
+    ctx.arc(cx,cy,R*s,0,Math.PI*2);
+    ctx.strokeStyle = s===0.5 ? '#b8893a' : '#e8e8e8';
+    ctx.lineWidth   = s===0.5 ? 1.5 : 1;
+    ctx.setLineDash(s===0.5 ? [4,3] : []);
+    ctx.stroke(); ctx.setLineDash([]);
+  });
+
+  // ── 축 선 ──
+  for(let i=0;i<N;i++){
+    const p = pt(i,R);
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(p.x,p.y);
+    ctx.strokeStyle='#ddd'; ctx.lineWidth=1; ctx.stroke();
+  }
+
+  // ── 외부 컬러 아크 ──
+  for(let i=0;i<N;i++){
+    const startAng = angle(i) - Math.PI/N + 0.1;
+    const endAng   = angle(i) + Math.PI/N - 0.1;
+    ctx.beginPath();
+    ctx.arc(cx,cy,ARC_R,startAng,endAng);
+    ctx.strokeStyle = colors[i];
+    ctx.lineWidth   = 10;
+    ctx.lineCap     = 'round';
+    ctx.stroke();
+    // 아크 중간 % 표시
+    const midAng = (startAng+endAng)/2;
+    const ix = cx + ARC_R*Math.cos(midAng);
+    const iy = cy + ARC_R*Math.sin(midAng);
+    ctx.beginPath(); ctx.arc(ix,iy,13,0,Math.PI*2);
+    ctx.fillStyle=colors[i]; ctx.fill();
+    ctx.fillStyle='#fff';
+    ctx.font='bold 9px Noto Sans KR,sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(pcts[i]+'%',ix,iy);
+  }
+
+  // ── 데이터 폴리곤 ──
+  ctx.beginPath();
+  for(let i=0;i<N;i++){
+    const p = pt(i, R*vals[i]);
+    i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y);
+  }
+  ctx.closePath();
+  const grad = ctx.createRadialGradient(cx,cy,0,cx,cy,R);
+  grad.addColorStop(0,'rgba(184,137,58,0.35)');
+  grad.addColorStop(1,'rgba(13,33,55,0.20)');
+  ctx.fillStyle=grad; ctx.fill();
+  ctx.strokeStyle='#0d2137'; ctx.lineWidth=2.5; ctx.stroke();
+
+  // ── 데이터 포인트 ──
+  for(let i=0;i<N;i++){
+    const p = pt(i, R*vals[i]);
+    ctx.beginPath(); ctx.arc(p.x,p.y,7,0,Math.PI*2);
+    ctx.fillStyle=colors[i]; ctx.fill();
+    ctx.beginPath(); ctx.arc(p.x,p.y,3.5,0,Math.PI*2);
+    ctx.fillStyle='#fff'; ctx.fill();
+  }
+
+  // ── 축 라벨 — 방향별 개별 위치 지정 ──
+  // 0=위, 1=오른, 2=아래, 3=왼
+  const LAB_R = ARC_R + 22;
+  const labelPos = [
+    { dx:0,  dy:-18, align:'center' },  // 위
+    { dx:16, dy:0,   align:'left'   },  // 오른
+    { dx:0,  dy:18,  align:'center' },  // 아래
+    { dx:-16,dy:0,   align:'right'  },  // 왼
+  ];
+  for(let i=0;i<N;i++){
+    const lp  = pt(i, LAB_R);
+    const cfg = labelPos[i];
+    const dom = vals[i]>=0.5;
+    const x   = lp.x + cfg.dx;
+    const y   = lp.y + cfg.dy;
+    ctx.textAlign     = cfg.align;
+    ctx.textBaseline  = 'middle';
+    ctx.font = 'bold 10px Noto Sans KR,sans-serif';
+    ctx.fillStyle = colors[i];
+    ctx.fillText(labels[i], x, y);
+    ctx.font = '9px Noto Sans KR,sans-serif';
+    ctx.fillStyle = '#666';
+    ctx.fillText('▸'+(dom?subA[i]:subB[i]), x, y+14);
+  }
+
+  // ── 중심 ──
+  ctx.beginPath(); ctx.arc(cx,cy,4,0,Math.PI*2);
+  ctx.fillStyle='#bbb'; ctx.fill();
+
+  // ── 범례 ──
+  const leg = document.getElementById('result-spider-legend');
+  if(leg){
+    leg.innerHTML = AXIS_NAMES.map((ax,i)=>{
+      const dom = vals[i]>=0.5;
+      const lbl = dom ? ax.a : ax.b;
+      const intensity = Math.abs(pcts[i]-50);
+      const str = intensity>=30?'매우 강한':intensity>=15?'뚜렷한':'균형적인';
+      return `<span style="font-size:0.72rem;padding:4px 10px;border-radius:12px;background:${colors[i]}22;color:${colors[i]};font-weight:700;border:1px solid ${colors[i]}44;">${str} ${lbl}</span>`;
+    }).join('');
+  }
+}
+
+
+function drawWechsler(r){
+  const cv=document.getElementById('wschart');
+  const W=Math.max(cv.parentElement.clientWidth||340, 300);
+  cv.width=W; cv.height=240;
+  const ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,W,240);
+  const PL=46,PR=10,PT=28,PB=56;
+  const CW=W-PL-PR, CH=240-PT-PB;
+
+  // grid & Y labels
+  ctx.font='10px Noto Sans KR, sans-serif';
+  for(let p=0;p<=100;p+=20){
+    const y=PT+CH-(p/100)*CH;
+    ctx.strokeStyle='#e8e8e8'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(PL,y); ctx.lineTo(PL+CW,y); ctx.stroke();
+    ctx.fillStyle='#aaa'; ctx.textAlign='right';
+    ctx.fillText(p+'%',PL-5,y+3.5);
+  }
+
+  // 50% reference line
+  const y50=PT+CH*0.5;
+  ctx.save(); ctx.strokeStyle='#b8893a'; ctx.lineWidth=2;
+  ctx.setLineDash([5,3]);
+  ctx.beginPath(); ctx.moveTo(PL,y50); ctx.lineTo(PL+CW,y50); ctx.stroke();
+  ctx.restore();
+  ctx.fillStyle='#b8893a'; ctx.font='bold 9px Noto Sans KR,sans-serif';
+  ctx.textAlign='left'; ctx.fillText('기준 50%',PL+3,y50-5);
+
+  // column x positions
+  const cw=CW/4;
+  const xs=[0,1,2,3].map(i=>PL+cw*i+cw/2);
+  const pcts=r.pcts;
+
+  // Profile line
+  ctx.save(); ctx.strokeStyle='#0d2137'; ctx.lineWidth=2.5;
+  ctx.lineJoin='round'; ctx.setLineDash([]);
+  ctx.beginPath();
+  xs.forEach((x,i)=>{ const y=PT+CH-(pcts[i]/100)*CH; i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
+  ctx.stroke(); ctx.restore();
+
+  // Dots + labels
+  xs.forEach((x,i)=>{
+    const y=PT+CH-(pcts[i]/100)*CH;
+    ctx.beginPath(); ctx.arc(x,y,9,0,Math.PI*2);
+    ctx.fillStyle=AXIS_COLS[i]; ctx.fill();
+    ctx.beginPath(); ctx.arc(x,y,4.5,0,Math.PI*2);
+    ctx.fillStyle='#fff'; ctx.fill();
+    // score above
+    ctx.fillStyle=AXIS_COLS[i]; ctx.font='bold 11px Noto Sans KR,sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(pcts[i]+'%',x,y-15);
+    // dominant letter
+    ctx.font='bold 11px Noto Sans KR,sans-serif';
+    ctx.fillStyle='#fff';
+    ctx.fillText(r.letters[i],x,y+3.5);
+  });
+
+  // X labels
+  const an=AXIS_NAMES;
+  xs.forEach((x,i)=>{
+    ctx.fillStyle='#333'; ctx.font='10px Noto Sans KR,sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(an[i].a,x,PT+CH+18);
+    ctx.fillStyle='#bbb'; ctx.font='9px Noto Sans KR,sans-serif';
+    ctx.fillText('↕ '+an[i].b,x,PT+CH+32);
+  });
+}
+
+function renderAxisCards(r){
+  const el=document.getElementById('axis-cards');
+  el.innerHTML=r.pcts.map((p,i)=>{
+    const dom=p>=50;
+    const lbl=dom?AXIS_NAMES[i].a:AXIS_NAMES[i].b;
+    const intensity=Math.abs(p-50);
+    const iLabel=intensity>=30?'강한':intensity>=10?'뚜렷한':'균형적인';
+    return `<div class="axis-score-card">
+      <div class="asc-label" style="color:${AXIS_COLS[i]}">${iLabel} ${lbl} 성향</div>
+      <div class="asc-val" style="color:${AXIS_COLS[i]}">${p}%</div>
+      <div class="asc-bar-wrap">
+        <div class="asc-bar-fill" style="width:${p}%;background:${AXIS_COLS[i]}"></div>
+        <div class="asc-mid"></div>
+      </div>
+      <div class="asc-ends"><span>${AXIS_NAMES[i].a}</span><span>${AXIS_NAMES[i].b}</span></div>
+    </div>`;
+  }).join('');
+}
+
+/* ============================================================
+   SPIDER (RADAR) CHART — 16유형
+   ============================================================ */
+function drawSpider(tc, total){
+  const cv = document.getElementById('spider-chart');
+  if(!cv) return;
+
+  const TYPE_KEYS = ['RPTS','RPTA','RPES','RPEA','RCTS','RCTA','RCES','RCEA',
+                     'IPTS','IPTA','IPES','IPEA','ICTS','ICTA','ICES','ICEA'];
+  const N = 16;
+  const SIZE = 380;
+  cv.width = SIZE; cv.height = SIZE;
+  const ctx = cv.getContext('2d');
+  const cx = SIZE/2, cy = SIZE/2;
+  const R  = 110;
+  const LR = 150;
+
+  const maxCnt = Math.max(...TYPE_KEYS.map(k => tc[k]||0), 1);
+  // 0명이면 최솟값(0.05)으로 — 중심으로 꺼지지 않게
+  const vals   = TYPE_KEYS.map(k => Math.max((tc[k]||0) / maxCnt, 0.05));
+  const counts = TYPE_KEYS.map(k => tc[k]||0);
+
+  const angle = i => (Math.PI*2*i/N) - Math.PI/2;
+  const pt    = (i,r) => ({ x: cx+r*Math.cos(angle(i)), y: cy+r*Math.sin(angle(i)) });
+
+  ctx.clearRect(0,0,SIZE,SIZE);
+
+  // ── 다각형 그리드 (25% / 50% / 75% / 100%) ──
+  [0.25, 0.5, 0.75, 1.0].forEach(s=>{
+    ctx.beginPath();
+    for(let i=0;i<N;i++){
+      const p=pt(i, R*s);
+      i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = s===0.5 ? '#b8893a' : '#e0e0e0';
+    ctx.lineWidth   = s===0.5 ? 1.5 : 0.8;
+    ctx.setLineDash(s===0.5 ? [4,3] : []);
+    ctx.stroke(); ctx.setLineDash([]);
+  });
+
+  // ── 축 선 ──
+  for(let i=0;i<N;i++){
+    const p=pt(i,R);
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(p.x,p.y);
+    ctx.strokeStyle='#e0e0e0'; ctx.lineWidth=0.8; ctx.stroke();
+  }
+
+  // ── 데이터 채움 폴리곤 ──
+  ctx.beginPath();
+  for(let i=0;i<N;i++){
+    const p=pt(i, R*vals[i]);
+    i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y);
+  }
+  ctx.closePath();
+  ctx.fillStyle='rgba(13,33,55,0.20)'; ctx.fill();
+  ctx.strokeStyle='#0d2137'; ctx.lineWidth=2; ctx.stroke();
+
+  // ── 데이터 포인트 (값 있는 것만) ──
+  for(let i=0;i<N;i++){
+    if(counts[i]===0) continue;
+    const p=pt(i, R*vals[i]);
+    ctx.beginPath(); ctx.arc(p.x,p.y,5,0,Math.PI*2);
+    ctx.fillStyle='#0d2137'; ctx.fill();
+    ctx.beginPath(); ctx.arc(p.x,p.y,2.5,0,Math.PI*2);
+    ctx.fillStyle='#fff'; ctx.fill();
+  }
+
+  // ── 라벨 ──
+  for(let i=0;i<N;i++){
+    const lp  = pt(i, LR);
+    const ang = angle(i);
+    const code = TYPE_KEYS[i];
+    const cnt  = counts[i];
+    let align = 'center';
+    if(Math.cos(ang)>0.3)  align='left';
+    if(Math.cos(ang)<-0.3) align='right';
+    ctx.font = cnt>0 ? 'bold 9px Noto Sans KR,sans-serif' : '9px Noto Sans KR,sans-serif';
+    ctx.fillStyle = cnt>0 ? '#0d2137' : '#ccc';
+    ctx.textAlign = align; ctx.textBaseline='middle';
+    ctx.fillText(code, lp.x, lp.y-5);
+    ctx.font='8px Noto Sans KR,sans-serif';
+    ctx.fillStyle = cnt>0 ? '#b8893a' : '#ddd';
+    ctx.fillText(cnt>0 ? cnt+'명' : '0', lp.x, lp.y+6);
+  }
+
+  // ── 중심 ──
+  ctx.beginPath(); ctx.arc(cx,cy,3,0,Math.PI*2);
+  ctx.fillStyle='#ccc'; ctx.fill();
+  ctx.font='8px Noto Sans KR,sans-serif';
+  ctx.fillStyle='#b8893a'; ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.fillText('50%', cx+3, cy-R*0.5-4);
+}
+
+/* ============================================================
+   DEPARTMENT GUIDELINE GENERATOR
+   ============================================================ */
+function makeDeptGuide(axAvg, sorted){
+  const [ax0,ax1,ax2,ax3] = axAvg;
+  const topType = sorted[0]?.[0] || '';
+  const topName = TYPES[topType]?.name || '';
+
+  // 각 축 성향 판단
+  const t0 = ax0>=65?'강한 규정준수':ax0>=50?'규정준수':ax0>=35?'상황판단':'강한 상황판단';
+  const t1 = ax1>=65?'강한 공익중심':ax1>=50?'공익중심':ax1>=35?'관계중심':'강한 관계중심';
+  const t2 = ax2>=65?'강한 투명엄격':ax2>=50?'투명엄격':ax2>=35?'실천중심':'강한 실천중심';
+  const t3 = ax3>=65?'강한 원칙실천':ax3>=50?'원칙실천':ax3>=35?'유연대응':'강한 유연대응';
+
+  // 부서 특성 문장 생성
+  const char0 = ax0>=50
+    ? '규정과 절차를 중시하는 원칙 중심 성향이 강합니다'
+    : '상황에 맞게 유연하게 판단하는 성향이 강합니다';
+  const char1 = ax1>=50
+    ? '공익과 시민 서비스를 최우선으로 생각하는 부서입니다'
+    : '팀 내 관계와 협력을 중시하는 부서입니다';
+  const char2 = ax2>=50
+    ? '투명한 업무 처리와 책임감을 강조하는 분위기입니다'
+    : '실질적인 실천과 현장 중심의 업무 방식을 선호합니다';
+  const char3 = ax3>=50
+    ? '일관된 원칙과 적극적인 청렴 실천 의지가 높습니다'
+    : '상황에 따른 유연한 대응을 선호하는 분위기입니다';
+
+  // 부서 소통 가이드 3가지
+  const guides = [];
+
+  if(ax0>=50 && ax3>=50){
+    guides.push({ icon:'📌', title:'원칙 기반 소통', desc:'업무 협의 시 규정과 기준을 먼저 명확히 공유하고 시작하세요. 기준이 명확할수록 팀 갈등이 줄어듭니다.' });
+  } else if(ax0<50 && ax3<50){
+    guides.push({ icon:'🔄', title:'유연한 소통 문화', desc:'상황에 따라 유연하게 소통하되, 청렴 기준선만큼은 팀 공동 합의로 정해두는 것이 중요합니다.' });
+  } else {
+    guides.push({ icon:'⚖️', title:'균형 잡힌 소통', desc:'원칙을 지키면서도 상황을 고려하는 균형 잡힌 소통 방식이 이 부서에 가장 잘 맞습니다.' });
+  }
+
+  if(ax1>=50){
+    guides.push({ icon:'🏛️', title:'공익 중심 의사결정', desc:'업무 결정 시 "이것이 시민에게 어떤 영향을 주는가"를 항상 팀 논의의 첫 번째 질문으로 삼아보세요.' });
+  } else {
+    guides.push({ icon:'🤝', title:'관계 기반 협력', desc:'부서 내 신뢰 관계가 청렴 문화의 토대입니다. 정기적인 팀 소통으로 서로의 어려움을 나누는 시간을 만드세요.' });
+  }
+
+  if(ax2>=50){
+    guides.push({ icon:'📋', title:'투명한 업무 공유', desc:'업무 진행 상황을 정기적으로 공유하고 기록을 남기는 습관이 부서 전체의 청렴도를 높여줍니다.' });
+  } else {
+    guides.push({ icon:'🌱', title:'실천 중심 문화', desc:'거창한 선언보다 일상의 작은 실천이 모여 청렴 문화가 됩니다. 팀원 각자의 실천 사례를 함께 나눠보세요.' });
+  }
+
+  return `
+  <div class="card" style="border-left:4px solid var(--gold);">
+    <div class="card-title">🏢 우리 부서 청렴 소통 가이드라인</div>
+    <div style="background:var(--gold-light);border-radius:10px;padding:12px 14px;margin-bottom:14px;">
+      <div style="font-size:0.75rem;color:var(--gold);font-weight:700;margin-bottom:4px;">우리 부서 성향 요약</div>
+      <div style="font-size:0.85rem;color:var(--navy);line-height:1.7;">
+        ${char0}.<br>${char1}.<br>${char2}.<br>${char3}.
+      </div>
+      ${topType?`<div style="margin-top:8px;font-size:0.78rem;color:var(--g600);">가장 많은 유형: <b style="color:var(--navy)">${topType} · ${topName}</b></div>`:''}
+    </div>
+    ${guides.map(g=>`
+    <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--g100);align-items:flex-start;">
+      <div style="font-size:1.4rem;line-height:1;margin-top:2px;">${g.icon}</div>
+      <div>
+        <div style="font-weight:700;font-size:0.88rem;color:var(--navy);margin-bottom:3px;">${g.title}</div>
+        <div style="font-size:0.83rem;color:#555;line-height:1.65;">${g.desc}</div>
+      </div>
+    </div>`).join('')}
+  </div>`;
+}
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+async function renderDash(){
+  document.getElementById('dash-body').innerHTML='<div class="empty-msg mt20">데이터를 불러오는 중...</div>';
+  const all=await getAll();
+  const n=all.length;
+  const tc={};
+  Object.keys(TYPES).forEach(k=>tc[k]=0);
+  all.forEach(r=>{ if(tc[r.code]!==undefined) tc[r.code]++; });
+  const sorted=Object.entries(tc).filter(([,v])=>v>0).sort(([,a],[,b])=>b-a);
+  const axSum=[0,0,0,0];
+  all.forEach(r=>{ if(r.pcts) r.pcts.forEach((p,i)=>axSum[i]+=p); });
+  const axAvg=n>0?axSum.map(s=>Math.round(s/n)):[50,50,50,50];
+  const part=Math.round(n/TOTAL_MEMS*100);
+  const top=sorted[0];
+
+  let html=`
+  <div style="padding-top:14px;">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num">${n}</div><div class="stat-lbl">참여 인원</div></div>
+      <div class="stat-card"><div class="stat-num">${part}%</div><div class="stat-lbl">참여율 (${TOTAL_MEMS}명 기준)</div></div>
+      <div class="stat-card"><div class="stat-num">${sorted.length}</div><div class="stat-lbl">출현 유형 수</div></div>
+      <div class="stat-card"><div class="stat-num" style="font-size:1.2rem">${TOTAL_MEMS-n}</div><div class="stat-lbl">미참여 인원</div></div>
+    </div>`;
+
+  if(n===0){
+    html+='<div class="empty-msg">아직 참여자가 없습니다</div></div>';
+    document.getElementById('dash-body').innerHTML=html; return;
+  }
+
+  if(top){
+    html+=`<div class="top-type-box mb12 card">
+      <div class="text-xs" style="color:#c8d8e8;margin-bottom:4px;">🏆 가장 많은 유형</div>
+      <div class="top-type-code">${top[0]}</div>
+      <div class="top-type-name">${TYPES[top[0]]?.name||''} · ${top[1]}명</div>
+    </div>`;
+  }
+
+  html+=`<div class="card"><div class="card-title">📊 유형별 분포</div>
+    ${sorted.map(([code,cnt])=>`
+    <div class="type-bar-row">
+      <div class="tbr-head">
+        <span class="tbr-name">${code} <span style="font-size:0.75rem;color:var(--g400)">·</span> ${TYPES[code]?.name||code}</span>
+        <span class="tbr-cnt">${cnt}명 · ${Math.round(cnt/n*100)}%</span>
+      </div>
+      <div class="tbr-track"><div class="tbr-fill" style="width:${Math.round(cnt/n*100)}%"></div></div>
+    </div>`).join('')}
+  </div>`;
+
+  html+=`<div class="card"><div class="card-title">🕸️ 16유형 분포 레이더 차트</div>
+    <div class="chart-subtitle" style="font-size:0.75rem;color:var(--g400);margin-bottom:8px;">16개 청렴MBTI 유형별 인원 분포 — 바깥일수록 해당 유형 인원이 많음</div>
+    <canvas id="spider-chart" style="display:block;width:100%;max-width:360px;margin:0 auto;"></canvas>
+  </div>`;
+
+  html+=`<div class="card"><div class="card-title">🧭 4축 성향 분석</div>
+    <div style="margin-top:4px;">
+      ${AXIS_NAMES.map((ax,i)=>{
+        const p=axAvg[i], dom=p>=50, lbl=dom?ax.a:ax.b;
+        return `<div class="tend-row">
+          <div class="tend-name" style="color:${AXIS_COLS[i]}">${ax.label} — <b>${lbl}</b> 경향 (${p}%)</div>
+          <div class="tend-track">
+            <div class="tend-fill" style="width:${p}%;background:${AXIS_COLS[i]}"></div>
+            <div class="tend-mid"></div>
+          </div>
+          <div class="tend-ends"><span>${ax.a}</span><span>${ax.b}</span></div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+
+  html+='<div style="height:8px"></div>';
+  html += makeDeptGuide(axAvg, sorted);
+  html += '</div>';
+  document.getElementById('dash-body').innerHTML=html;
+
+  // 스파이더 차트 그리기 (DOM 삽입 후)
+  setTimeout(()=>drawSpider(tc, n), 300);
+}
+
+/* ============================================================
+   ADMIN
+   ============================================================ */
+async function adminLogin(){
+  if(document.getElementById('pw-inp').value!==ADMIN_PW){ toast("비밀번호가 올바르지 않습니다"); return; }
+  S.adminIn=true;
+  document.getElementById('admin-login').classList.add('hidden');
+  await renderAdminPanel();
+}
+
+async function renderAdminPanel(){
+  const all = await getAll();
+  const panel = document.getElementById('admin-panel');
+  panel.classList.remove('hidden');
+  const n = all.length;
+  const notYet = TOTAL_MEMS - n;
+  const part = Math.round(n / TOTAL_MEMS * 100);
+
+  // 유형별 집계
+  const tc = {};
+  Object.keys(TYPES).forEach(k => tc[k] = 0);
+  all.forEach(r => { if(tc[r.code] !== undefined) tc[r.code]++; });
+  const sorted = Object.entries(tc).filter(([,v]) => v > 0).sort(([,a],[,b]) => b - a);
+
+  // 축별 평균
+  const axSum = [0,0,0,0];
+  all.forEach(r => { if(r.pcts) r.pcts.forEach((p,i) => axSum[i] += p); });
+  const axAvg = n > 0 ? axSum.map(s => Math.round(s/n)) : [50,50,50,50];
+
+  // 미참여자 번호 목록
+  const usedNicks = new Set(all.map(r => r.nick));
+  const notDone = [];
+  for(let i=1; i<=57; i++){
+    const name = '월배검수팀'+i;
+    if(!usedNicks.has(name)) notDone.push(i+'번');
+  }
+
+  // 교육유형별 집계
+  const eduMap = {};
+  all.forEach(r => {
+    const edu = TYPES[r.code]?.edu || '기타';
+    eduMap[edu] = (eduMap[edu]||0) + 1;
+  });
+  const eduSorted = Object.entries(eduMap).sort(([,a],[,b]) => b-a);
+
+  panel.innerHTML = `
+  <!-- 요약 통계 -->
+  <div class="card mt16">
+    <div class="card-title">📊 전체 참여 현황</div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num">${n}</div><div class="stat-lbl">참여 완료</div></div>
+      <div class="stat-card"><div class="stat-num">${notYet}</div><div class="stat-lbl">미참여</div></div>
+      <div class="stat-card"><div class="stat-num">${part}%</div><div class="stat-lbl">참여율</div></div>
+      <div class="stat-card"><div class="stat-num">${sorted.length}</div><div class="stat-lbl">출현 유형 수</div></div>
+    </div>
+  </div>
+
+  <!-- 유형별 분포 -->
+  <div class="card">
+    <div class="card-title">🏆 유형별 분포</div>
+    ${n===0 ? '<p class="empty-msg">데이터 없음</p>' :
+      sorted.map(([code,cnt],i) => `
+      <div class="type-bar-row">
+        <div class="tbr-head">
+          <span class="tbr-name">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'　'} ${code} · ${TYPES[code]?.name||code}</span>
+          <span class="tbr-cnt">${cnt}명 · ${Math.round(cnt/n*100)}%</span>
+        </div>
+        <div class="tbr-track"><div class="tbr-fill" style="width:${Math.round(cnt/n*100)}%"></div></div>
+      </div>`).join('')}
+  </div>
+
+  <!-- 부서 성향 분석 -->
+  <div class="card">
+    <div class="card-title">🧭 부서 전체 성향 분석</div>
+    ${AXIS_NAMES.map((ax,i) => {
+      const p = axAvg[i], dom = p>=50, lbl = dom?ax.a:ax.b;
+      const intensity = Math.abs(p-50);
+      const iLabel = intensity>=30?'매우 강한':intensity>=15?'뚜렷한':'균형적인';
+      return `<div class="tend-row">
+        <div class="tend-name" style="color:${AXIS_COLS[i]}">${ax.label} — ${iLabel} <b>${lbl}</b> 경향 (${p}%)</div>
+        <div class="tend-track">
+          <div class="tend-fill" style="width:${p}%;background:${AXIS_COLS[i]}"></div>
+          <div class="tend-mid"></div>
+        </div>
+        <div class="tend-ends"><span>${ax.a}</span><span>${ax.b}</span></div>
+      </div>`;
+    }).join('')}
+  </div>
+
+  <!-- 맞춤 교육 수요 -->
+  <div class="card">
+    <div class="card-title">🎓 맞춤 교육 수요 분석</div>
+    <p class="text-sm mb12" style="color:var(--g600)">유형별 권장 교육 기준 집계</p>
+    ${n===0 ? '<p class="empty-msg">데이터 없음</p>' :
+      eduSorted.map(([edu,cnt]) => `
+      <div class="type-bar-row">
+        <div class="tbr-head">
+          <span class="tbr-name">${edu}</span>
+          <span class="tbr-cnt">${cnt}명 · ${Math.round(cnt/n*100)}%</span>
+        </div>
+        <div class="tbr-track"><div class="tbr-fill" style="width:${Math.round(cnt/n*100)}%;background:var(--gold)"></div></div>
+      </div>`).join('')}
+  </div>
+
+  <!-- 참여자 목록 -->
+  <div class="card">
+    <div class="card-title">📋 참여자 목록 (${n}명)</div>
+    ${n===0 ? '<p class="empty-msg">참여자 없음</p>' :
+      all.map((r,idx) => `
+      <div class="resp-item">
+        <div>
+          <div class="resp-nick">${idx+1}. ${r.nick||'익명'}</div>
+          <div class="resp-type">${r.code} · ${TYPES[r.code]?.name||''}</div>
+        </div>
+        <div class="resp-date">${r.ts ? new Date(r.ts).toLocaleDateString('ko-KR') : ''}</div>
+      </div>`).join('')}
+  </div>
+
+  <!-- 미참여자 목록 -->
+  <div class="card">
+    <div class="card-title">⏳ 미참여자 목록 (${notYet}명)</div>
+    ${notYet===0
+      ? '<p style="text-align:center;color:var(--green);padding:16px 0;font-weight:700;">🎉 전원 참여 완료!</p>'
+      : `<p class="text-sm mb12" style="color:var(--g600)">아직 검사를 완료하지 않은 번호입니다.</p>
+         <div style="display:flex;flex-wrap:wrap;gap:6px;">
+           ${notDone.map(n=>`<span style="background:var(--g100);color:var(--g600);padding:4px 10px;border-radius:8px;font-size:0.8rem;">${n}</span>`).join('')}
+         </div>`}
+  </div>
+
+  <!-- 데이터 관리 -->
+  <div class="card">
+    <div class="card-title" style="color:var(--red)">⚠️ 데이터 관리</div>
+    <p class="text-sm mb12" style="color:var(--g600)">초기화 후 복구는 불가능합니다.</p>
+    <button class="btn btn-danger" onclick="doReset()">전체 데이터 초기화</button>
+  </div>
+  <div style="height:16px"></div>`;
+}
+
+async function doReset(){
+  if(!confirm('정말로 모든 응답 데이터를 초기화하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) return;
+  await clearAll();
+  toast("초기화 완료"); renderAdminPanel();
+}
+
+/* ============================================================
+   STORAGE (Firebase + localStorage fallback)
+   ============================================================ */
+async function saveResult(r){
+  const d={ code:r.code, nick:r.nick, pcts:r.pcts, letters:r.letters, ts:r.ts };
+  if(useDB && db){
+    try{
+      await db.collection(DB_COL).add(d);
+      console.warn('✅ Firebase 저장 완료:', r.nick, r.code);
+      return;
+    }catch(e){
+      console.error('❌ Firebase 저장 실패:', e);
+    }
+  }
+  // localStorage 백업
+  const arr=JSON.parse(localStorage.getItem('c_res')||'[]');
+  arr.push(d); localStorage.setItem('c_res',JSON.stringify(arr));
+  console.warn('💾 localStorage 저장:', r.nick);
+}
+
+async function getAll(){
+  if(useDB && db){
+    try{
+      const snap=await db.collection(DB_COL).orderBy('ts','desc').get();
+      return snap.docs.map(d=>d.data());
+    }catch(e){ console.error('FB read:',e); }
+  }
+  return JSON.parse(localStorage.getItem('c_res')||'[]');
+}
+
+async function clearAll(){
+  if(useDB && db){
+    try{
+      const snap=await db.collection(DB_COL).get();
+      const b=db.batch(); snap.docs.forEach(d=>b.delete(d.ref)); await b.commit(); return;
+    }catch(e){ console.error('FB clear:',e); }
+  }
+  localStorage.removeItem('c_res');
+}
+
+/* ============================================================
+   NICK DROPDOWN — 월배검수팀1~61
+   ============================================================ */
+async function initNickGrid(){
+  const inner = document.getElementById('nick-list-inner');
+  // 먼저 전체 목록 즉시 표시 (빠른 UX)
+  let html = '';
+  for(let i=1; i<=57; i++){
+    const name = '월배검수팀'+i;
+    html += `<div class="nick-item" id="nick-${i}" onclick="selectNick('${name}')">${name}</div>`;
+  }
+  inner.innerHTML = html;
+
+  // 그 다음 Firebase에서 사용된 번호 비활성화
+  try {
+    const all = await getAll();
+    const usedSet = new Set(all.map(r => r.nick));
+    for(let i=1; i<=57; i++){
+      const name = '월배검수팀'+i;
+      if(usedSet.has(name)){
+        const el = document.getElementById('nick-'+i);
+        if(el){
+          el.classList.add('used');
+          el.onclick = null;
+        }
+      }
+    }
+    const saved = localStorage.getItem('c_nick');
+    if(saved && !usedSet.has(saved)) selectNick(saved, true);
+  } catch(e) {
+    console.warn('닉네임 상태 로드 실패:', e);
+  }
+}
+
+function toggleNickList(){
+  const list = document.getElementById('nick-list');
+  const trigger = document.getElementById('nick-trigger');
+  const arrow = document.getElementById('nick-arrow');
+  const isOpen = list.classList.contains('open');
+  list.classList.toggle('open', !isOpen);
+  trigger.classList.toggle('open', !isOpen);
+  arrow.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+function selectNick(name, silent){
+  S.nick = name;
+  localStorage.setItem('c_nick', name);
+  // 리스트 항목 선택 표시
+  document.querySelectorAll('.nick-item').forEach(el=>{
+    el.classList.toggle('sel', el.textContent.trim()===name);
+  });
+  // 트리거 텍스트 업데이트
+  const trigger = document.getElementById('nick-trigger');
+  document.getElementById('nick-trigger-text').textContent = name;
+  trigger.classList.add('selected');
+  // 리스트 닫기
+  document.getElementById('nick-list').classList.remove('open');
+  trigger.classList.remove('open');
+  document.getElementById('nick-arrow').style.transform = '';
+  // 시작 버튼 활성화
+  const startBtn = document.getElementById('btn-start');
+  startBtn.disabled = false;
+  startBtn.textContent = name + ' 으로 검사 시작 →';
+  if(!silent) toast(name + ' 선택됨!');
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+// initNickGrid는 Firebase 초기화 완료 후 자동 실행됩니다
+</script>
+</body>
+</html>
